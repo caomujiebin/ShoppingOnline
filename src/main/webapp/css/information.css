@@ -1,0 +1,55 @@
+* {
+	padding: 0;
+	margin: 0;
+	
+}
+a{
+	text-decoration:none;
+}
+.name{
+	text-align:center;
+	height:50px;
+	width:100%;
+	background-color:red;
+	font-size:35px;
+	color:white;
+}
+.information{
+	
+	background-color:white;
+	text-align:center;
+	color:black;
+	margin-left:400px;
+	font-size:50px;
+}
+.payfor{
+	margin-top:5px;
+	background-color:black;
+	text-align:center;
+	color:white;
+	margin-left:632px;
+	font-size:25px;
+	cursor: pointer;
+}
+.font{
+	margin-top:5px;
+	color:black;
+	
+}
+
+.inputPassword{
+width: 200px;
+	height: 30px;
+	border-radius: 5px;
+	position: relative;
+	top:-6px;
+	left: -13px;
+}
+
+.error{
+	font-size: 31px;
+	color:red;
+	position: relative;
+	top:-5px;
+	left: 552px;
+}
