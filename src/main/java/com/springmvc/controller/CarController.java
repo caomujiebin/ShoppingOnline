@@ -18,7 +18,7 @@ import java.util.List;
 public class CarController {
     @Autowired
     private CarService carService;
-//商品
+//商品ewa
     @Autowired
     private GoodService goodService;
     //显示购物车
