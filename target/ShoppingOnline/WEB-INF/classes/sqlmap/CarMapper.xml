@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.springmvc.dao.CarMapper">
+  <resultMap id="CarMap" type="com.springmvc.entity.GoodCar">
+      <id column="goodsId" jdbcType="INTEGER" property="goodsId" />
+      <result column="userid" jdbcType="INTEGER" property="userid" />
+      <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="goodsName" jdbcType="VARCHAR" property="goodsName" />
+    <result column="goodsType" jdbcType="VARCHAR" property="goodsType" />
+    <result column="goodsPrice" jdbcType="FLOAT" property="goodsPrice" />
+    <result column="goodsColor" jdbcType="VARCHAR" property="goodsColor" />
+    <result column="goodsMessage" jdbcType="VARCHAR" property="goodsMessage" />
+    <result column="goodsFile" jdbcType="VARCHAR" property="goodsFile" />
+      <result column="goodsCount" jdbcType="VARCHAR" property="goodsCount" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    userid,username,Goodsid,Goodsname,Goodstype,Goodsprice,Goodscolor;,Goodsmessage,GoodsNoprice,Goodsfile,goodsCount
+  </sql>
+
+  <!--获取购物车信息-->
+  <select id="goodCar" parameterType="com.springmvc.entity.GoodCar" resultMap="CarMap">
+        SELECT *
+        FROM goodscar
+        WHERE goodscar.userid=#{userid}
+  </select>
+
+    <!--删除购物车商品-->
+    <select id="delgoodCar" parameterType="com.springmvc.entity.GoodCar">
+        DELETE
+        FROM goodscar
+        WHERE goodscar.goodsId=#{goodsId}
+  </select>
+
+    <!--根据商品id获取商品信息-->
+    <select id="showGood" parameterType="com.springmvc.entity.GoodCar" resultMap="CarMap">
+        SELECT *
+        FROM goodscar
+        WHERE goodscar.goodsId=#{goodsId}
+  </select>
+
+    <!--
+    将购物车中的商品加上相应的数目
+    -->
+    <select id="addgoodCarCount" parameterType="com.springmvc.entity.GoodCar">
+        update goodscar
+        set goodsCount=goodsCount+#{goodsCount}
+        WHERE goodscar.goodsId=#{goodsId}
+  </select>
+
+<!--添加商品到订单-->
+    <select id="addgoodCar">
+        INSERT
+        INTO goodscar(goodsId,userid,username,goodsColor,goodsFile,goodsName,goodsPrice,goodsType,goodsMessage,goodsCount)
+        VALUES (#{goodsId},#{userid},#{username},#{goodsColor},#{goodsFile},#{goodsName},#{goodsPrice},#{goodsType},#{goodsMessage},#{goodsCount})
+  </select>
+</mapper>

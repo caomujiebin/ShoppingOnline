@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springmvc.dao.UserMapper">
+
+  <sql id="Base_Column_List">
+    id, username, password
+  </sql>
+  <resultMap id="userMap" type="com.springmvc.entity.User">
+  <id column="id" jdbcType="INTEGER" property="id" />
+  <result column="username" jdbcType="VARCHAR" property="username" />
+  <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="money" jdbcType="FLOAT" property="money" />
+    <result column="telphone" jdbcType="VARCHAR" property="telphone" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="lotteryId" jdbcType="INTEGER" property="lotteryId" />
+    <result column="lotteryTime" jdbcType="VARCHAR" property="lotteryTime" />
+
+  </resultMap>
+
+  <!--登录-->
+  <select id="login" resultMap="userMap">
+        SELECT *
+        FROM user
+        where user.username = #{username} and user.password=#{password}
+  </select>
+
+  <!--获取用户id-->
+  <select id="getId" parameterType="String" resultType="String">
+       SELECT id
+       FROM user
+       where user.username = #{username} and user.password=#{password}
+  </select>
+
+  <!--获取用户余额-->
+  <select id="getRestMoney" parameterType="String" resultType="Float">
+    SELECT money
+    FROM user
+    where user.id=#{id}
+  </select>
+
+  <!--获取个人信息-->
+  <select id="showInformation" parameterType="com.springmvc.entity.User" resultMap="userMap">
+    SELECT *
+    FROM user
+    where user.id=#{id}
+  </select>
+
+    <!--注册-->
+    <select id="register" parameterType="com.springmvc.entity.User">
+    Insert user(id,username,password,address,telphone,status,money)
+    values(#{id},#{username},#{password},#{address},#{telphone},"用户","0")
+  </select>
+
+  <!--
+  修改用户金额
+   -->
+  <select id="updateMoney" parameterType="com.springmvc.entity.User" resultMap="userMap">
+    update user
+    set money=money-#{money},lotteryId=0,lotteryTime=""
+    where user.id=#{id}
+  </select>
+
+  <!--
+  查找用户余额-->
+  <select id="selectMoney" parameterType="com.springmvc.entity.User" resultType="java.lang.Float">
+    SELECT money
+    FROM user
+    where user.id=#{id}
+  </select>
+
+  <!--修改用户表中的优惠券
+    -->
+  <select id="updateLottery" parameterType="com.springmvc.entity.User">
+    update user
+    set user.lotteryId=#{lotteryId},user.lotteryTime=#{lotteryTime}
+    where id=#{id}
+  </select>
+
+  <!--查看用户当前是否拥有优惠券
+  -->
+  <select id="haveLottery" parameterType="com.springmvc.entity.User" resultType="INTEGER">
+    select lotteryId
+    from user
+    where user.id=#{id}
+  </select>
+
+  <!--查看是否用户名已被注册-->
+  <select id="selectUsernameCount" parameterType="com.springmvc.entity.User" resultType="java.lang.String">
+    select username
+    from user
+    where user.username=#{username}
+  </select>
+
+  <!--查看是否有可用优惠券-->
+  <select id="selectLottery" parameterType="com.springmvc.entity.User" resultType="java.lang.Integer">
+       select lotteryId
+       from lottery
+       where lottery.lotteryId=(
+       select user.lotteryId
+       from user
+       where user.id=#{id}
+		)
+  </select>
+
+
+  <!--将优惠券从用户表删除-->
+  <select id="deleteLottery">
+       delete lotteryId,lotteryTime
+       from user
+       where user.id=#{id}
+  </select>
+  </mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springmvc.dao.GoodMapper">
+  <resultMap id="GoodMap" type="com.springmvc.entity.Good">
+    <id column="goodsId" jdbcType="INTEGER" property="goodsId" />
+    <result column="goodsName" jdbcType="VARCHAR" property="goodsName" />
+    <result column="goodsType" jdbcType="VARCHAR" property="goodsType" />
+    <result column="goodsPrice" jdbcType="FLOAT" property="goodsPrice" />
+    <result column="goodsColor" jdbcType="VARCHAR" property="goodsColor" />
+    <result column="goodsMessage" jdbcType="VARCHAR" property="goodsMessage" />
+    <result column="goodsNoprice" jdbcType="FLOAT" property="goodsNoprice" />
+    <result column="goodsFile" jdbcType="VARCHAR" property="goodsFile" />
+      <result column="goodsCount" jdbcType="INTEGER" property="goodsCount" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    Goodsid,Goodsname,Goodstype,Goodsprice,Goodscolor;,Goodsmessage,GoodsNoprice,Goodsfile
+  </sql>
+
+  <!--获取商品信息-->
+  <select id="showAll" parameterType="com.springmvc.entity.Good" resultMap="GoodMap">
+        SELECT *
+        FROM goods
+        WHERE goods.goodsCount>0
+  </select>
+
+    <!--
+    //从商品表里查找信息
+    -->
+    <select id="showOneGood" parameterType="com.springmvc.entity.Good" resultMap="GoodMap">
+        SELECT *
+        FROM goods
+        WHERE goods.goodsId=#{goodsId}
+  </select>
+
+    <!--将商品的数量减去相应数量-->
+    <select id="deleteCount" parameterType="com.springmvc.entity.Good" resultMap="GoodMap">
+        update goods
+        set goodsCount=goodsCount-#{goodsCount}
+        WHERE goods.goodsId=#{goodsId}
+  </select>
+</mapper>

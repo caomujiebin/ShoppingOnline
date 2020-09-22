@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springmvc.dao.OrderMapper">
+  <resultMap id="OrderMap" type="com.springmvc.entity.Orders">
+    <id column="goodsId" jdbcType="INTEGER" property="goodsId" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="userid" jdbcType="VARCHAR" property="userid" />
+    <result column="goodsType" jdbcType="VARCHAR" property="goodsType" />
+    <result column="goodsColor" jdbcType="VARCHAR" property="goodsColor" />
+    <result column="goodsMessage" jdbcType="VARCHAR" property="goodsMessage" />
+    <result column="goodsFile" jdbcType="VARCHAR" property="goodsFile" />
+    <result column="number" jdbcType="INTEGER" property="number"/>
+    <result column="goodsTime" jdbcType="VARCHAR" property="goodsTime"/>
+    <result column="goodsPrice" jdbcType="FLOAT" property="goodsPrice" />
+    <result column="goodsName" jdbcType="VARCHAR" property="goodsName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+   userid,username,goodsId,,goodsType,goodsPrice,goodsColor,goodsMessage,goodsFile,goodsTime,number
+  </sql>
+
+  <!--通过用户id获取商品信息-->
+  <select id="showOrder" parameterType="com.springmvc.entity.Orders" resultMap="OrderMap">
+        SELECT goodsName,goodsPrice,goodsTime,goodsType,goodsColor,number,goodsFile,goodsMessage,goodsId,goodsStatus
+        FROM orders
+        WHERE orders.userid=#{id}
+  </select>
+
+  <!--删除订单-->
+  <select id="deleteOrder" parameterType="com.springmvc.entity.Orders">
+        DELETE
+        FROM orders
+        WHERE orders.goodsId=#{goodsId}
+  </select>
+
+    <!--
+    //新增订单
+    -->
+    <select id="addOrder" parameterType="com.springmvc.entity.Orders">
+        insert
+        into orders (goodsId,userid,username,number,goodsColor,goodsFile,goodsName,goodsPrice,goodsType,goodsMessage,goodsTime,goodsStatus)
+        values (#{goodsId},#{userid},#{username},#{goodsCount},#{goodsColor},#{goodsFile},#{goodsName},#{goodsPrice},#{goodsType},#{goodsMessage},#{goodsTime},"待付款")
+  </select>
+
+    <!--查找是否用同一订单-->
+    <select id="haveOrder" parameterType="com.springmvc.entity.Orders" resultMap="OrderMap">
+        SELECT *
+        FROM orders
+        WHERE orders.goodsId=#{goodsId} and orders.userid=#{userid} and orders.goodsStatus="待付款"
+  </select>
+
+    <!--将订单中的时间和状态修改-->
+    <select id="updateTime" parameterType="com.springmvc.entity.Orders">
+        update orders
+        set goodsTime=#{goodsTime},goodsStatus="待发货"
+        WHERE orders.goodsId=#{goodsId}
+  </select>
+</mapper>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springmvc.dao.LotteryMapper">
+  <resultMap id="LotteryMap" type="com.springmvc.entity.Lottery">
+    <id column="lotteryId" jdbcType="INTEGER" property="lotteryId" />
+    <result column="lotteryFull" jdbcType="FLOAT" property="lotteryFull" />
+    <result column="lotteryReduce" jdbcType="FLOAT" property="lotteryReduce" />
+    <result column="lotteryFile" jdbcType="VARCHAR" property="lotteryFile" />
+
+  </resultMap>
+  <sql id="Base_Column_List">
+   lotteryId,lotteryFull,lotteryReduce,lotteryFile
+  </sql>
+
+  <!--通过用户id获取商品信息-->
+  <select id="getLotteryReduce" parameterType="com.springmvc.entity.Lottery" resultMap="LotteryMap">
+        SELECT lotteryFull,lotteryReduce
+        FROM lottery
+        WHERE lotteryId=#{lotteryId}
+  </select>
+
+</mapper>
